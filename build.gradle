@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.5'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id("org.springframework.boot") version "2.7.18"  // Downgraded for Java 8 compatibility
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
 group = 'com.egyptianbanks.ipn'
@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(8)  // Changed to Java 8
     }
 }
 
@@ -18,11 +18,43 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation("org.springframework.boot:spring-boot-starter-web:2.7.18")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client:2.7.18")
+    implementation("org.springframework.boot:spring-boot-starter-webflux:2.7.18")
+
+    // JSON Processing
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4")
+
+    // Testing
+    testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.18")
+    testImplementation("io.projectreactor:reactor-test:3.4.24")
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    // PDF Processing
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
+    implementation 'org.apache.pdfbox:fontbox:2.0.27'
+
+    // CSV Processing
+    implementation 'org.apache.commons:commons-csv:1.9.0'
+
+    // Logging
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'ch.qos.logback:logback-classic:1.2.10'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Fat JAR configuration
+bootJar {
+    archiveFileName = "${project.name}.jar"
+    manifest {
+        attributes 'Main-Class': 'com.egyptianbanks.ipn.UberReceiptProcessor'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
