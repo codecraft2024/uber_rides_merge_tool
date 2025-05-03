@@ -1,25 +1,38 @@
 package com.egyptianbanks.ipn.uberridesmergetool;
 
-public  class ReceiptData {
-        private final String amount;
-        private final String date;
-        private final String fileName;
+class ReceiptData {
+    private final String date;
+    private final String amount;
+    private final String description;
+    private final String department;
+    private final int serialNumber;
 
-        public ReceiptData(String amount, String date, String fileName) {
-            this.amount = amount;
-            this.date = date;
-            this.fileName = fileName;
-        }
-
-        public String getAmount() {
-            return amount;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
+    public ReceiptData(String date, String amount, String description,
+                       String department, int serialNumber) {
+        this.date = date;
+        this.amount = amount;
+        this.description = description;
+        this.department = department;
+        this.serialNumber = serialNumber;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+}

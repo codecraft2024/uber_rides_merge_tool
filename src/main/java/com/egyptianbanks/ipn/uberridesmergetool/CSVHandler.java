@@ -9,20 +9,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.text.ParseException;
+
 public class CSVHandler {
 
-    public  void writeToCSV(List<ReceiptData> receipts, String outputPath) throws IOException {
+    public void writeToCSV(List<ReceiptData> receipts, String outputPath) throws IOException, ParseException {
         // Sort receipts by date
         receipts.sort((r1, r2) -> {
             try {
-                // Parse dates in format "April 3, 2025"
-                SimpleDateFormat format1 = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-                // Parse dates in format "4/3/25 11:00 PM"
-                SimpleDateFormat format2 = new SimpleDateFormat("M/d/yy h:mm a", Locale.ENGLISH);
-
-                Date date1 = parseDate(r1.getDate(), format1, format2);
-                Date date2 = parseDate(r2.getDate(), format1, format2);
-
+                SimpleDateFormat excelDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date1 = excelDateFormat.parse(r1.getDate());
+                Date date2 = excelDateFormat.parse(r2.getDate());
                 return date1.compareTo(date2);
             } catch (ParseException e) {
                 return 0; // If parsing fails, maintain original order
@@ -30,26 +30,32 @@ public class CSVHandler {
         });
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
-            writer.println("File,Amount,Date");
+            // Write CSV header
+            writer.println("Date,Amount (EGP),Description,Department,Serial Number");
+
+            // Write data rows
             for (ReceiptData receipt : receipts) {
-                writer.printf("\"%s\",\"EGP %s\",\"%s\"%n",
-                        receipt.getFileName(),
-                        receipt.getAmount(),
-                        receipt.getDate());
+                writer.printf("\"%s\",%.2f,\"%s\",\"%s\",%d%n",
+                        formatDateForOutput(receipt.getDate()),
+                        parseAmount(receipt.getAmount()),
+                        receipt.getDescription(),
+                        receipt.getDepartment(),
+                        receipt.getSerialNumber());
             }
         }
     }
 
-    private  Date parseDate(String dateString, SimpleDateFormat format1, SimpleDateFormat format2)
-            throws ParseException {
-        try {
-            return format1.parse(dateString);
-        } catch (ParseException e1) {
-            try {
-                return format2.parse(dateString);
-            } catch (ParseException e2) {
-                throw new ParseException("Could not parse date: " + dateString, 0);
-            }
-        }
+    private String formatDateForOutput(String excelDate) throws ParseException {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        Date date = inputFormat.parse(excelDate);
+        return outputFormat.format(date);
+    }
+
+    private double parseAmount(String amountStr) {
+        // Handle comma as decimal separator if needed
+        amountStr = amountStr.replace(",", ".");
+        return Double.parseDouble(amountStr);
     }
 }
+

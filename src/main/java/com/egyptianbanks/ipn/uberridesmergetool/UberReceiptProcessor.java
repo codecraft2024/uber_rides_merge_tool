@@ -31,7 +31,7 @@ public class UberReceiptProcessor {
         try {
             List<ReceiptData> allReceipts = new PdfReader().readAll(inputDir);
 
-            new CSVHandler().writeToCSV(allReceipts, outputFile);
+            new CSVHandler().writeToCSV(allReceipts, "/Users/minaanwer/Downloads/expenses_report.csv");
 
         } catch (Exception e) {
             System.err.println("Error processing receipts: " + e.getMessage());
