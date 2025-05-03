@@ -7,13 +7,18 @@ class ReceiptData {
     private final String department;
     private final int serialNumber;
 
+
+
+    private final String fileName;
+
     public ReceiptData(String date, String amount, String description,
-                       String department, int serialNumber) {
+                       String department, int serialNumber, String fileName) {
         this.date = date;
         this.amount = amount;
         this.description = description;
         this.department = department;
         this.serialNumber = serialNumber;
+        this.fileName = fileName;
     }
 
     public String getDate() {
@@ -35,4 +40,9 @@ class ReceiptData {
     public int getSerialNumber() {
         return serialNumber;
     }
+
+    public String getFileName() {
+        return fileName;
+    }
+
 }

@@ -5,6 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +37,8 @@ public class UberParser {
                     amount,
                     "Uber rides",
                     "development",
-                    1 // Default serial number
+                    1,
+                    Paths.get(pdfPath).getFileName().toString()
             );
         }
     }

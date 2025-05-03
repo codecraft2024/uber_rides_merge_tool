@@ -31,16 +31,16 @@ public class CSVHandler {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
             // Write CSV header
-            writer.println("Date,Amount (EGP),Description,Department,Serial Number");
+            writer.println("Date,Amount (EGP),Description,Department,File Name");
 
             // Write data rows
             for (ReceiptData receipt : receipts) {
-                writer.printf("\"%s\",%.2f,\"%s\",\"%s\",%d%n",
+                writer.printf("\"%s\",%.2f,\"%s\",\"%s\",\"%s\"%n",  // Added \" and %n
                         formatDateForOutput(receipt.getDate()),
                         parseAmount(receipt.getAmount()),
                         receipt.getDescription(),
                         receipt.getDepartment(),
-                        receipt.getSerialNumber());
+                        receipt.getFileName());
             }
         }
     }
