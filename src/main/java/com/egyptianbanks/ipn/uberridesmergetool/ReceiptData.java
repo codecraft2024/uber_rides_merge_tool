@@ -1,6 +1,6 @@
 package com.egyptianbanks.ipn.uberridesmergetool;
 
-class ReceiptData {
+public class ReceiptData {
     private final String date;
     private final String amount;
     private final String description;

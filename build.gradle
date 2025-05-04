@@ -44,6 +44,14 @@ dependencies {
     // Logging
     implementation 'org.slf4j:slf4j-api:1.7.32'
     implementation 'ch.qos.logback:logback-classic:1.2.10'
+
+
+
+    implementation 'com.formdev:flatlaf:2.6' // Last version supporting Java 8
+    implementation 'com.formdev:flatlaf-extras:2.6'
+    implementation("com.kitfox.svg:svg-salamander:1.0")
+
+
 }
 
 tasks.named('test') {
