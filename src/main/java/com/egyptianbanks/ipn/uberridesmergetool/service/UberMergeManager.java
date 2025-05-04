@@ -2,8 +2,8 @@ package com.egyptianbanks.ipn.uberridesmergetool.service;
 
 
 import com.egyptianbanks.ipn.uberridesmergetool.*;
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

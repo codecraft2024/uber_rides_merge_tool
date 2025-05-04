@@ -1,5 +1,6 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.util;
 
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;

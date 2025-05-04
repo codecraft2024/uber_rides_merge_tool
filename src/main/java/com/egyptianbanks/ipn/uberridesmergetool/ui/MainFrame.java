@@ -1,6 +1,6 @@
 package com.egyptianbanks.ipn.uberridesmergetool.ui;
 
-import com.egyptianbanks.ipn.uberridesmergetool.StatusLoggerImpl;
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLoggerImpl;
 import com.egyptianbanks.ipn.uberridesmergetool.service.UberMergeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
