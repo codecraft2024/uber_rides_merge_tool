@@ -1,5 +1,7 @@
 package com.egyptianbanks.ipn.uberridesmergetool;
 
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +17,11 @@ import java.util.*;
 import java.text.ParseException;
 
 public class CSVHandler {
+
+    private StatusLogger statusLogger;
+    public CSVHandler(StatusLogger statusLogger){
+        this.statusLogger = statusLogger;
+    }
 
     public void writeToCSV(List<ReceiptData> receipts, String outputPath) throws IOException, ParseException {
         // Sort receipts by date

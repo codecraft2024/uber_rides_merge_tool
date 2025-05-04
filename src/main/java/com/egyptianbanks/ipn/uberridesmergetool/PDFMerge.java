@@ -1,5 +1,6 @@
 package com.egyptianbanks.ipn.uberridesmergetool;
 
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.File;
@@ -25,9 +26,11 @@ import java.util.List;
 public class PDFMerge {
 
     private final String inputDirectory;
+    private final StatusLogger statusLogger;
+    public PDFMerge(String inputDirectory, StatusLogger statusLogger) {
 
-    public PDFMerge(String inputDirectory) {
         this.inputDirectory = inputDirectory;
+        this.statusLogger = statusLogger;
     }
 
     public void merge(List<ReceiptData> receipts, String outputPath) throws IOException {
@@ -45,21 +48,21 @@ public class PDFMerge {
         for (ReceiptData receipt : receipts) {
             File pdfFile = new File(inputDirectory, receipt.getFileName());
             if (!pdfFile.exists()) {
-                System.err.println("PDF file not found: " + pdfFile.getAbsolutePath());
+                statusLogger.logStatus("PDF file not found: " + pdfFile.getAbsolutePath());
                 continue;
             }
 
             try (PDDocument document = PDDocument.load(pdfFile)) {
                 merger.addSource(pdfFile);
             } catch (IOException e) {
-                System.err.println("Error adding PDF: " + pdfFile.getAbsolutePath() + " - " + e.getMessage());
+                statusLogger.logStatus("Error adding PDF: " + pdfFile.getAbsolutePath() + " - " + e.getMessage());
             }
         }
 
         // Merge all PDFs
         try {
             merger.mergeDocuments(null);
-            System.out.println("Successfully merged " + receipts.size() + " PDFs to " + outputPath);
+            statusLogger.logStatus("Successfully merged " + receipts.size() + " PDFs to " + outputPath);
         } catch (IOException e) {
             throw new IOException("Failed to merge PDFs: " + e.getMessage(), e);
         }

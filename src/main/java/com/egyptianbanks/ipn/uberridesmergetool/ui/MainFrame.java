@@ -15,8 +15,6 @@ public class MainFrame extends JFrame {
     private JLabel ridesDirLabel;
     private JLabel outputDirLabel;
     private JTextArea statusTextArea;
-
-
     private final StatusLoggerImpl statusLogger;
 
     @Autowired
@@ -24,6 +22,7 @@ public class MainFrame extends JFrame {
         this.uberMergeManager = uberMergeManager;
         this.statusLogger = statusLogger;
     }
+
     @PostConstruct
     public void init() {
         initializeUI();
@@ -31,11 +30,10 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-
     private void initializeUI() {
         setTitle("Uber Rides Merge Tool");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 500); // Increased size to accommodate multi-line status
+        setSize(700, 500);
         setLocationRelativeTo(null);
 
         // Main panel with padding
@@ -73,13 +71,21 @@ public class MainFrame extends JFrame {
         processButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         processButton.addActionListener(e -> {
-            String status = uberMergeManager.Process(ridesDirLabel.getText(), outputDirLabel.getText());
+            statusTextArea.setText("");
+            String outputPath = outputDirLabel.getText();
+            String status = uberMergeManager.Process(ridesDirLabel.getText(), outputPath);
             appendStatus(status);
+
+            // Open output directory after successful processing
+            if (!status.contains("Failed") && !outputPath.equals("Not selected")) {
+                openOutputDirectory(outputPath);
+            }
         });
 
         contentPanel.add(processButton);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        // Status panel
         JPanel statusPanel = new JPanel(new BorderLayout());
         statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 
@@ -95,17 +101,37 @@ public class MainFrame extends JFrame {
         statusPanel.add(scrollPane, BorderLayout.CENTER);
 
         contentPanel.add(statusPanel);
-
         panel.add(contentPanel, BorderLayout.CENTER);
         add(panel);
     }
 
-    private void appendStatus(String text) {
-        if (!statusTextArea.getText().isEmpty()) {
-            statusTextArea.append("\n");
+    private void openOutputDirectory(String path) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                File dir = new File(path);
+                if (dir.exists()) {
+                    desktop.open(dir);
+                    appendStatus("Opened output directory: " + path);
+                } else {
+                    appendStatus("Output directory doesn't exist: " + path);
+                }
+            } else {
+                appendStatus("Desktop operations not supported on this platform");
+            }
+        } catch (Exception ex) {
+            appendStatus("Error opening output directory: " + ex.getMessage());
         }
-        statusTextArea.append(text);
-        statusTextArea.setCaretPosition(statusTextArea.getDocument().getLength());
+    }
+
+    private void appendStatus(String text) {
+        SwingUtilities.invokeLater(() -> {
+            if (!statusTextArea.getText().isEmpty()) {
+                statusTextArea.append("\n");
+            }
+            statusTextArea.append(text);
+            statusTextArea.setCaretPosition(statusTextArea.getDocument().getLength());
+        });
     }
 
     private JPanel createDirectorySelectionPanel(String labelText) {
@@ -135,7 +161,6 @@ public class MainFrame extends JFrame {
                 File selectedFile = fileChooser.getSelectedFile();
                 pathLabel.setText(selectedFile.getAbsolutePath());
 
-                // Store the appropriate path
                 if (labelText.equals("Rides Directory:")) {
                     ridesDirLabel = pathLabel;
                 } else {

@@ -1,5 +1,8 @@
 package com.egyptianbanks.ipn.uberridesmergetool;
 
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
+import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLoggerImpl;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -11,6 +14,12 @@ import java.util.List;
 
 public class PdfReader {
 
+    public StatusLogger statusLogger;
+
+    public PdfReader(StatusLogger statusLogger){
+        this.statusLogger = statusLogger;
+    }
+
     public List<ReceiptData> readAll(String directoryPath) throws IOException {
         List<ReceiptData> receipts = new ArrayList<>();
 
@@ -19,9 +28,9 @@ public class PdfReader {
                 try {
                     ReceiptData data = new UberParser().parse(filePath.toString());
                     receipts.add(data);
-                    System.out.println("Processed: " + filePath.getFileName());
+                    statusLogger.logStatus("Process File: " + filePath.getFileName());
                 } catch (Exception e) {
-                    System.err.println("Error processing " + filePath + ": " + e.getMessage());
+                     statusLogger.logStatus("Error processing " + filePath + ": " + e.getMessage());
                 }
             }
         }

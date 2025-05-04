@@ -20,15 +20,15 @@ public class UberMergeManager {
     }
 
     public String Process(String ridesDir, String outputDir) {
-
         statusLogger.logStatus("App Start Process Rides, please wait ....");
         statusLogger.logStatus("Start Scanning Folder: " + ridesDir);
+
         try {
-            List<ReceiptData> allReceipts = new PdfReader().readAll(ridesDir);
+            List<ReceiptData> allReceipts = new PdfReader(statusLogger).readAll(ridesDir);
 
-            new CSVHandler().writeToCSV(allReceipts, "/Users/minaanwer/Downloads/expenses_report.csv");
+            new CSVHandler(statusLogger).writeToCSV(allReceipts, outputDir+"/expenses_report.csv");
 
-            new PDFMerge("/Users/minaanwer/Downloads").merge(allReceipts, "/Users/minaanwer/Downloads/all.pdf");
+            new PDFMerge(ridesDir,statusLogger).merge(allReceipts, outputDir+"/all.pdf");
         } catch (Exception e) {
             System.err.println("Error processing receipts: " + e.getMessage());
             e.printStackTrace();
