@@ -1,7 +1,8 @@
 plugins {
     id 'java'
-    id("org.springframework.boot") version "2.7.18"  // Downgraded for Java 8 compatibility
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'edu.sc.seis.launch4j' version '2.5.4'
 }
 
 group = 'com.egyptianbanks.ipn'
@@ -54,15 +55,18 @@ dependencies {
 
 }
 
+launch4j {
+    mainClassName = 'org.springframework.boot.loader.JarLauncher' // Important change!
+    icon = "${projectDir}/src/main/resources/icon.ico"
+    jreMinVersion = '1.8'
+    jreMaxVersion = '1.8'
+    bundledJrePath = 'jre'
+    outputDir = 'build/launch4j'
+    copyConfigurable = []
+    stayAlive = false
+    dontWrapJar = true // Set to true for Spring Boot apps
+}
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-// Fat JAR configuration
-bootJar {
-    archiveFileName = "${project.name}.jar"
-    manifest {
-        attributes 'Main-Class': 'com.egyptianbanks.ipn.UberReceiptProcessor'
-    }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
