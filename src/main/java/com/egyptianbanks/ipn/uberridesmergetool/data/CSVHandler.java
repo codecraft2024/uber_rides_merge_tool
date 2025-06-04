@@ -1,6 +1,7 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.data;
 
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,11 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.text.ParseException;
 
 public class CSVHandler {
 

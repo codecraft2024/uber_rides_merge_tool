@@ -1,8 +1,11 @@
-package com.egyptianbanks.ipn.uberridesmergetool.service;
+package com.egyptianbanks.ipn.uberridesmergetool.domain.service;
 
 
-import com.egyptianbanks.ipn.uberridesmergetool.*;
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
+import com.egyptianbanks.ipn.uberridesmergetool.data.CSVHandler;
+import com.egyptianbanks.ipn.uberridesmergetool.data.PDFMerge;
+import com.egyptianbanks.ipn.uberridesmergetool.data.PdfReader;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

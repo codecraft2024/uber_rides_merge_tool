@@ -1,17 +1,7 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.data;
 
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
+import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.File;

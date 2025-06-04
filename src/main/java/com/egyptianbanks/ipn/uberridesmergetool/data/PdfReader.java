@@ -1,7 +1,7 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.data;
 
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLogger;
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLoggerImpl;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

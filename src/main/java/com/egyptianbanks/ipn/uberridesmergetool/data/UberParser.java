@@ -1,5 +1,6 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.data;
 
+import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 

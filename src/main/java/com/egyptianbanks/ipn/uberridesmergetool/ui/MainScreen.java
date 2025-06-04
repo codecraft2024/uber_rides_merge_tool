@@ -1,8 +1,8 @@
 package com.egyptianbanks.ipn.uberridesmergetool.ui;
 
-import com.egyptianbanks.ipn.uberridesmergetool.util.StatusLoggerImpl;
-import com.egyptianbanks.ipn.uberridesmergetool.service.UberMergeManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.service.UberMergeManager;
+import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLoggerImpl;
+ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.io.File;
 
 @org.springframework.stereotype.Component
-public class MainFrame extends JFrame {
+public class MainScreen extends JFrame {
     private final UberMergeManager uberMergeManager;
     private JLabel ridesDirLabel;
     private JLabel outputDirLabel;
@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
     private final StatusLoggerImpl statusLogger;
 
     @Autowired
-    public MainFrame(UberMergeManager uberMergeManager, StatusLoggerImpl statusLogger) {
+    public MainScreen(UberMergeManager uberMergeManager, StatusLoggerImpl statusLogger) {
         this.uberMergeManager = uberMergeManager;
         this.statusLogger = statusLogger;
     }

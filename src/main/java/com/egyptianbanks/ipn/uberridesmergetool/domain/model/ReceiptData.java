@@ -1,4 +1,4 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.egyptianbanks.ipn.uberridesmergetool.domain.model;
 
 public class ReceiptData {
     private final String date;
