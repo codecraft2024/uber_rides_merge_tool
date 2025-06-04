@@ -1,7 +1,7 @@
 package com.egyptianbanks.ipn.uberridesmergetool.domain.service;
 
 
-import com.egyptianbanks.ipn.uberridesmergetool.data.CSVHandler;
+ import com.egyptianbanks.ipn.uberridesmergetool.data.ExcelTemplateUpdater;
 import com.egyptianbanks.ipn.uberridesmergetool.data.PDFMerge;
 import com.egyptianbanks.ipn.uberridesmergetool.data.PdfReader;
 import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
@@ -23,13 +23,13 @@ public class UberMergeManager {
     }
 
     public String Process(String ridesDir, String outputDir) {
-        statusLogger.logStatus("App Start Process Rides, please wait ....");
-        statusLogger.logStatus("Start Scanning Folder: " + ridesDir);
+        statusLogger.log("App Start Process Rides, please wait ....");
+        statusLogger.log("Start Scanning Folder: " + ridesDir);
 
         try {
             List<ReceiptData> allReceipts = new PdfReader(statusLogger).readAll(ridesDir);
 
-            new CSVHandler(statusLogger).writeToCSV(allReceipts, outputDir+"/expenses_report.csv");
+            new ExcelTemplateUpdater().fillTemplate(allReceipts, outputDir+"/ExpansesForm.xlsx");
 
             new PDFMerge(ridesDir,statusLogger).merge(allReceipts, outputDir+"/all.pdf");
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class UberMergeManager {
         }
 
 
-        statusLogger.logStatus("App finish....");
+        statusLogger.log("App finish....");
 
         return processLog;
 

@@ -28,9 +28,9 @@ public class PdfReader {
                 try {
                     ReceiptData data = new UberParser().parse(filePath.toString());
                     receipts.add(data);
-                    statusLogger.logStatus("Process File: " + filePath.getFileName());
+                    statusLogger.log("Process File: " + filePath.getFileName());
                 } catch (Exception e) {
-                     statusLogger.logStatus("Error processing " + filePath + ": " + e.getMessage());
+                     statusLogger.log("Error processing " + filePath + ": " + e.getMessage());
                 }
             }
         }

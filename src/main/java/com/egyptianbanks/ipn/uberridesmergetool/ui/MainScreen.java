@@ -36,8 +36,7 @@ public class MainScreen extends JFrame {
         setSize(700, 500);
         setLocationRelativeTo(null);
 
-        // Main panel with padding
-        JPanel panel = new JPanel();
+         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BorderLayout(10, 10));
 

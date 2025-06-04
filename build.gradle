@@ -52,7 +52,8 @@ dependencies {
     implementation 'com.formdev:flatlaf-extras:2.6'
     implementation("com.kitfox.svg:svg-salamander:1.0")
 
-
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    implementation 'org.apache.poi:poi:5.2.5'
 }
 
 launch4j {

@@ -38,21 +38,21 @@ public class PDFMerge {
         for (ReceiptData receipt : receipts) {
             File pdfFile = new File(inputDirectory, receipt.getFileName());
             if (!pdfFile.exists()) {
-                statusLogger.logStatus("PDF file not found: " + pdfFile.getAbsolutePath());
+                statusLogger.log("PDF file not found: " + pdfFile.getAbsolutePath());
                 continue;
             }
 
             try (PDDocument document = PDDocument.load(pdfFile)) {
                 merger.addSource(pdfFile);
             } catch (IOException e) {
-                statusLogger.logStatus("Error adding PDF: " + pdfFile.getAbsolutePath() + " - " + e.getMessage());
+                statusLogger.log("Error adding PDF: " + pdfFile.getAbsolutePath() + " - " + e.getMessage());
             }
         }
 
         // Merge all PDFs
         try {
             merger.mergeDocuments(null);
-            statusLogger.logStatus("Successfully merged " + receipts.size() + " PDFs to " + outputPath);
+            statusLogger.log("Successfully merged " + receipts.size() + " PDFs to " + outputPath);
         } catch (IOException e) {
             throw new IOException("Failed to merge PDFs: " + e.getMessage(), e);
         }

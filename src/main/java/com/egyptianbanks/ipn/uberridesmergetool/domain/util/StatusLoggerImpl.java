@@ -14,7 +14,7 @@ public class StatusLoggerImpl implements StatusLogger {
     }
 
     @Override
-    public void logStatus(String message) {
+    public void log(String message) {
         if (statusTextArea != null) {
             SwingUtilities.invokeLater(() -> {
                 if (!statusTextArea.getText().isEmpty()) {

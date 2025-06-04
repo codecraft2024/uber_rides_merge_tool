@@ -21,12 +21,10 @@ public class UberParser {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
-            // Extract total amount (looking for "Total EGP X.XX")
             Pattern amountPattern = Pattern.compile("Total\\s+EGP\\s+(\\d+\\.\\d{2})");
             Matcher amountMatcher = amountPattern.matcher(text);
             String amount = amountMatcher.find() ? amountMatcher.group(1) : null;
 
-            // Extract and format date
             String formattedDate = extractAndFormatDate(text);
 
             if (amount == null || formattedDate == null) {
@@ -46,7 +44,6 @@ public class UberParser {
 
     private String extractAndFormatDate(String text) throws IOException {
         try {
-            // First try full format (April 3, 2025)
             Pattern datePattern = Pattern.compile(
                     "(January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2},\\s+\\d{4}"
             );
@@ -60,7 +57,6 @@ public class UberParser {
                 return outputFormat.format(date);
             }
 
-            // Then try short format (4/3/25 11:00 PM)
             Pattern altDatePattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{2,4})\\s+\\d{1,2}:\\d{2}\\s+[AP]M");
             Matcher altDateMatcher = altDatePattern.matcher(text);
 
