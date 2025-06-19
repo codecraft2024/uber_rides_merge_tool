@@ -15,4 +15,6 @@ public class AppConfig {
         System.setProperty("swing.aatext", "true");
         return GraphicsEnvironment.getLocalGraphicsEnvironment();
     }
+
+
 }
