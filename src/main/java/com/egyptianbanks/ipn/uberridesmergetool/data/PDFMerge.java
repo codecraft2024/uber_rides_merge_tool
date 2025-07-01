@@ -58,7 +58,7 @@ public class PDFMerge {
         }
     }
 
-    private static class ReceiptDateComparator implements Comparator<ReceiptData> {
+    public static class ReceiptDateComparator implements Comparator<ReceiptData> {
         private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         @Override

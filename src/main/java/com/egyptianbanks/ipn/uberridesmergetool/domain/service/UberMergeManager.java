@@ -9,7 +9,8 @@ import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+ import java.util.Collections;
+ import java.util.List;
 
 @Service
 public class UberMergeManager {
@@ -28,7 +29,7 @@ public class UberMergeManager {
 
         try {
             List<ReceiptData> allReceipts = new PdfReader(statusLogger).readAll(ridesDir);
-
+            Collections.sort(allReceipts, new PDFMerge.ReceiptDateComparator());
             new ExcelTemplateUpdater().fillTemplate(allReceipts, outputDir+"/ExpansesForm.xlsx");
 
             new PDFMerge(ridesDir,statusLogger).merge(allReceipts, outputDir+"/all.pdf");
