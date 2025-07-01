@@ -27,6 +27,9 @@ public class UberParser {
 
             String formattedDate = extractAndFormatDate(text);
 
+            String fromLocation = extractFromLocation(text).replaceAll(",","");
+            String toLocation = extractToLocation(text).replaceAll(",","");
+
             if (amount == null || formattedDate == null) {
                 throw new IOException("Could not find required data in the PDF");
             }
@@ -37,7 +40,9 @@ public class UberParser {
                     "Uber rides",
                     "development",
                     1,
-                    Paths.get(pdfPath).getFileName().toString()
+                    Paths.get(pdfPath).getFileName().toString(),
+                    fromLocation,
+                    toLocation
             );
         }
     }
@@ -72,5 +77,17 @@ public class UberParser {
         } catch (ParseException e) {
             throw new IOException("Failed to parse date from PDF", e);
         }
+    }
+
+    private String extractFromLocation(String text) {
+        Pattern fromPattern = Pattern.compile("\\d{1,2}:\\d{2}\\s*[AP]M \\| (.+?)\\r?\\n");
+        Matcher matcher = fromPattern.matcher(text);
+        return matcher.find() ? matcher.group(1).trim() : null;
+    }
+
+    private String extractToLocation(String text) {
+        Pattern toPattern = Pattern.compile("\\d{1,2}:\\d{2}\\s*[AP]M \\| .+?\\r?\\n(\\d{1,2}:\\d{2}\\s*[AP]M \\| .+?)\\r?\\n");
+        Matcher matcher = toPattern.matcher(text);
+        return matcher.find() ? matcher.group(1).replaceFirst("^\\d{1,2}:\\d{2}\\s*[AP]M \\|", "").trim() : null;
     }
 }

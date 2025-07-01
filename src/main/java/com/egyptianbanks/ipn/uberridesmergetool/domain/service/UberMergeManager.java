@@ -2,7 +2,8 @@ package com.egyptianbanks.ipn.uberridesmergetool.domain.service;
 
 
  import com.egyptianbanks.ipn.uberridesmergetool.data.ExcelTemplateUpdater;
-import com.egyptianbanks.ipn.uberridesmergetool.data.PDFMerge;
+ import com.egyptianbanks.ipn.uberridesmergetool.data.FullDataCSVExtractor;
+ import com.egyptianbanks.ipn.uberridesmergetool.data.PDFMerge;
 import com.egyptianbanks.ipn.uberridesmergetool.data.PdfReader;
 import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
 import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLogger;
@@ -31,8 +32,8 @@ public class UberMergeManager {
             List<ReceiptData> allReceipts = new PdfReader(statusLogger).readAll(ridesDir);
             Collections.sort(allReceipts, new PDFMerge.ReceiptDateComparator());
             new ExcelTemplateUpdater().fillTemplate(allReceipts, outputDir+"/ExpansesForm.xlsx");
-
             new PDFMerge(ridesDir,statusLogger).merge(allReceipts, outputDir+"/all.pdf");
+            new FullDataCSVExtractor().writeDetailedCsv(allReceipts, outputDir+"/detailedExpansesForms.csv");
         } catch (Exception e) {
             System.err.println("Error processing receipts: " + e.getMessage());
             e.printStackTrace();
