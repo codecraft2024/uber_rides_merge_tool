@@ -22,6 +22,45 @@ public class ExcelTemplateUpdater {
         try (InputStream inp = resource.getInputStream(); Workbook workbook = new XSSFWorkbook(inp)) {
             Sheet sheet = workbook.getSheetAt(0);
 
+            // --- Fill static fields ---
+            // Place value in the cell immediately to the right of the label cell
+
+            // الإسم (find label in B3, value in C3)
+            Row rowName = sheet.getRow(2);
+            if (rowName == null) rowName = sheet.createRow(2);
+            Cell cellName = rowName.getCell(2); // C3 (index 2)
+            if (cellName == null) cellName = rowName.createCell(2);
+            cellName.setCellValue("مينا انور لويز");
+
+            // الرقم الوظيفى (label in B4, value in C4)
+            Row rowJobNum = sheet.getRow(3);
+            if (rowJobNum == null) rowJobNum = sheet.createRow(3);
+            Cell cellJobNum = rowJobNum.getCell(2); // C4 (index 2)
+            if (cellJobNum == null) cellJobNum = rowJobNum.createCell(2);
+            cellJobNum.setCellValue("281");
+
+            // الشهر (label in B5, value in C5)
+            Row rowMonth = sheet.getRow(4);
+            if (rowMonth == null) rowMonth = sheet.createRow(4);
+            Cell cellMonth = rowMonth.getCell(2); // C5 (index 2)
+            if (cellMonth == null) cellMonth = rowMonth.createCell(2);
+            if (!receipts.isEmpty()) {
+                String dateStr = receipts.get(0).getDate();
+                java.util.Date date = parseDate(dateStr);
+                SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", new java.util.Locale("ar"));
+                cellMonth.setCellValue(monthFormat.format(date));
+            }
+
+            // الإدارة (label in F3, value in G3)
+            Cell cellDept = rowName.getCell(6); // G3 (index 6)
+            if (cellDept == null) cellDept = rowName.createCell(6);
+            cellDept.setCellValue("development");
+
+            // القطاع (label in F4, value in G4)
+            Cell cellSector = rowJobNum.getCell(6); // G4 (index 6)
+            if (cellSector == null) cellSector = rowJobNum.createCell(6);
+            cellSector.setCellValue("mobile team");
+
             // Data starts at row 8 (index 7) and column B (index 1)
             final int START_ROW_INDEX = 7;
             final int START_COL_INDEX = 1;
