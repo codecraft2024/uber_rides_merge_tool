@@ -111,12 +111,12 @@ public class ExcelTemplateUpdater {
 
                 // مكان بدء الرحلة
                 Cell fromLocCell = row.createCell(START_COL_INDEX + FROM_LOC_COL);
-                fromLocCell.setCellValue(receipt.getFromLocation());
+                fromLocCell.setCellValue(shortenAddress(receipt.getFromLocation(), true, receipt));
                 fromLocCell.setCellStyle(fromLocStyle);
 
                 // مكان الوصول
                 Cell toLocCell = row.createCell(START_COL_INDEX + TO_LOC_COL);
-                toLocCell.setCellValue(receipt.getToLocation());
+                toLocCell.setCellValue(shortenAddress(receipt.getToLocation(), false, receipt));
                 toLocCell.setCellStyle(toLocStyle);
 
                 // القيمة
@@ -142,6 +142,45 @@ public class ExcelTemplateUpdater {
                 workbook.write(out);
             }
         }
+    }
+
+    // Helper to shorten address and annotate as (عمل) or (بيت)
+    private String shortenAddress(String address, boolean isFrom, ReceiptData receipt) {
+        if (address == null) return "";
+        String shortAddr = address;
+        // Extract up to first comma or just the street/number
+        int idx = address.indexOf(',');
+        if (idx > 0) {
+            shortAddr = address.substring(0, idx).trim();
+        } else {
+            String[] parts = address.split(" ");
+            if (parts.length > 3) {
+                shortAddr = String.join(" ", parts[0], parts[1], parts[2]);
+            }
+        }
+
+        String annotation = isWorkAddress(address) ? "(عمل)" : "(بيت)";
+
+        // If Arabic, insert annotation first, then address
+        if (containsArabic(shortAddr)) {
+            return annotation + " " + shortAddr;
+        } else {
+            // For English or mixed, append at the end
+            return shortAddr + " " + annotation;
+        }
+    }
+
+    private boolean isWorkAddress(String address) {
+        if (address == null) return false;
+        String lower = address.toLowerCase();
+        return lower.contains("n teseen");
+    }
+
+    private boolean containsArabic(String s) {
+        for (char c : s.toCharArray()) {
+            if (c >= 0x0600 && c <= 0x06FF) return true;
+        }
+        return false;
     }
 
     private java.util.Date parseDate(String dateStr) throws ParseException {
