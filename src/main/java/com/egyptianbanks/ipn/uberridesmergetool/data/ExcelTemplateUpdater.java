@@ -17,72 +17,83 @@ public class ExcelTemplateUpdater {
 
     public void fillTemplate(List<ReceiptData> receipts, String outputPath) throws IOException, ParseException {
         // Load Excel template from resources
-        ClassPathResource resource = new ClassPathResource("ExpensesForm.xlsx");
+        ClassPathResource resource = new ClassPathResource("ExpensesForm2.xlsx");
 
         try (InputStream inp = resource.getInputStream(); Workbook workbook = new XSSFWorkbook(inp)) {
             Sheet sheet = workbook.getSheetAt(0);
 
-            // Column indices (0-based)
-            final int ACCREDIT_COL = 0;      // الاعتماد (column A)
-            final int STATEMENT_COL = 1;     // بـيـان مـصـروفات
-            final int AMOUNT_COL = 2;        // المبلغ
-            final int DEPARTMENT_COL = 3;    // خاص بادراة
-            final int DATE_COL = 4;          // التاريخ
-            final int SERIAL_COL = 5;        // مسلسل
-            final int HEADER_ROW_INDEX = 3;  // Excel Row 4 (0-based index)
+            // Data starts at row 8 (index 7) and column B (index 1)
+            final int START_ROW_INDEX = 7;
+            final int START_COL_INDEX = 1;
 
-            Row headerRow = sheet.getRow(HEADER_ROW_INDEX);
+            // Column offsets for new arrangement:
+            final int DATE_COL = 0;           // التاريخ (B)
+            final int FROM_LOC_COL = 1;       // مكان بدء الرحلة (C)
+            final int TO_LOC_COL = 2;         // مكان الوصول (D)
+            final int AMOUNT_COL = 3;         // القيمة (E)
+            final int REASON_COL = 4;         // سبب الانتقال (F)
+            final int PAYMENT_COL = 5;        // طريقة الدفع (G)
+
+            Row headerRow = sheet.getRow(START_ROW_INDEX);
             if (headerRow == null) {
-                throw new IllegalStateException("Expected header row at row 4 not found in template.");
+                throw new IllegalStateException("Expected header row at row 8 not found in template.");
             }
 
-            // Get cell styles from template
-            CellStyle accreditStyle = headerRow.getCell(ACCREDIT_COL) != null ?
-                    headerRow.getCell(ACCREDIT_COL).getCellStyle() : workbook.createCellStyle();
-            CellStyle statementStyle = headerRow.getCell(STATEMENT_COL).getCellStyle();
-            CellStyle amountStyle = headerRow.getCell(AMOUNT_COL).getCellStyle();
-            CellStyle deptStyle = headerRow.getCell(DEPARTMENT_COL).getCellStyle();
-            CellStyle dateStyle = headerRow.getCell(DATE_COL).getCellStyle();
-            CellStyle serialStyle = headerRow.getCell(SERIAL_COL).getCellStyle();
+            // Get cell styles from template, use default style if cell is null
+            CellStyle dateStyle = headerRow.getCell(START_COL_INDEX + DATE_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + DATE_COL).getCellStyle() : workbook.createCellStyle();
+            CellStyle fromLocStyle = headerRow.getCell(START_COL_INDEX + FROM_LOC_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + FROM_LOC_COL).getCellStyle() : workbook.createCellStyle();
+            CellStyle toLocStyle = headerRow.getCell(START_COL_INDEX + TO_LOC_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + TO_LOC_COL).getCellStyle() : workbook.createCellStyle();
+            CellStyle amountStyle = headerRow.getCell(START_COL_INDEX + AMOUNT_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + AMOUNT_COL).getCellStyle() : workbook.createCellStyle();
+            CellStyle reasonStyle = headerRow.getCell(START_COL_INDEX + REASON_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + REASON_COL).getCellStyle() : workbook.createCellStyle();
+            CellStyle paymentStyle = headerRow.getCell(START_COL_INDEX + PAYMENT_COL) != null ?
+                    headerRow.getCell(START_COL_INDEX + PAYMENT_COL).getCellStyle() : workbook.createCellStyle();
 
             // Ensure proper date format
             CreationHelper creationHelper = workbook.getCreationHelper();
             short dateFormat = creationHelper.createDataFormat().getFormat("dd-MMM-yyyy");
             dateStyle.setDataFormat(dateFormat);
 
-            int rowIndex = HEADER_ROW_INDEX + 1;
+            int rowIndex = START_ROW_INDEX;
             for (ReceiptData receipt : receipts) {
-                Row row = sheet.createRow(rowIndex);
-
-                // الاعتماد (cell with "     " value)
-                Cell accreditCell = row.createCell(ACCREDIT_COL);
-                accreditCell.setCellValue("     ");  // five spaces
-                accreditCell.setCellStyle(accreditStyle);
-
-                // بـيـان مـصـروفات
-                Cell statementCell = row.createCell(STATEMENT_COL);
-                statementCell.setCellValue("انتقالات اوبر");
-                statementCell.setCellStyle(statementStyle);
-
-                // المبلغ
-                Cell amountCell = row.createCell(AMOUNT_COL);
-                amountCell.setCellValue(parseAmount(receipt.getAmount()));
-                amountCell.setCellStyle(amountStyle);
-
-                // خاص بادراة
-                Cell deptCell = row.createCell(DEPARTMENT_COL);
-                deptCell.setCellValue("التطوير");
-                deptCell.setCellStyle(deptStyle);
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) {
+                    row = sheet.createRow(rowIndex);
+                }
 
                 // التاريخ
-                Cell dateCell = row.createCell(DATE_COL);
+                Cell dateCell = row.createCell(START_COL_INDEX + DATE_COL);
                 dateCell.setCellValue(parseDate(receipt.getDate()));
                 dateCell.setCellStyle(dateStyle);
 
-                // مسلسل (serial number)
-                Cell serialCell = row.createCell(SERIAL_COL);
-                serialCell.setCellValue(rowIndex - HEADER_ROW_INDEX);
-                serialCell.setCellStyle(serialStyle);
+                // مكان بدء الرحلة
+                Cell fromLocCell = row.createCell(START_COL_INDEX + FROM_LOC_COL);
+                fromLocCell.setCellValue(receipt.getFromLocation());
+                fromLocCell.setCellStyle(fromLocStyle);
+
+                // مكان الوصول
+                Cell toLocCell = row.createCell(START_COL_INDEX + TO_LOC_COL);
+                toLocCell.setCellValue(receipt.getToLocation());
+                toLocCell.setCellStyle(toLocStyle);
+
+                // القيمة
+                Cell amountCell = row.createCell(START_COL_INDEX + AMOUNT_COL);
+                amountCell.setCellValue(parseAmount(receipt.getAmount()));
+                amountCell.setCellStyle(amountStyle);
+
+                // سبب الانتقال
+                Cell reasonCell = row.createCell(START_COL_INDEX + REASON_COL);
+                reasonCell.setCellValue("الذهاب/الرجوع من العمل");
+                reasonCell.setCellStyle(reasonStyle);
+
+                // طريقة الدفع
+                Cell paymentCell = row.createCell(START_COL_INDEX + PAYMENT_COL);
+                paymentCell.setCellValue("uber wallet");
+                paymentCell.setCellStyle(paymentStyle);
 
                 rowIndex++;
             }
