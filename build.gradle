@@ -54,6 +54,12 @@ dependencies {
 
     implementation 'org.apache.poi:poi-ooxml:5.2.5'
     implementation 'org.apache.poi:poi:5.2.5'
+
+    // Selenium WebDriver for Java
+    implementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
+
+    // Jsoup for HTML parsing
+    implementation 'org.jsoup:jsoup:1.17.2'
 }
 
 launch4j {
@@ -70,4 +76,3 @@ launch4j {
 tasks.named('test') {
     useJUnitPlatform()
 }
-

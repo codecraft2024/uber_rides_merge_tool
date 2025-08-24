@@ -2,6 +2,7 @@ package com.egyptianbanks.ipn.uberridesmergetool.ui;
 
 import com.egyptianbanks.ipn.uberridesmergetool.domain.service.UberMergeManager;
 import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLoggerImpl;
+import com.egyptianbanks.ipn.uberridesmergetool.util.ScrapRidesHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -151,8 +152,7 @@ public class MainScreen extends JFrame {
                 new EmptyBorder(8, 24, 8, 24)
         ));
         scrapRidesButton.addActionListener(e -> {
-            appendStatus("Scrap Rides button clicked.\n\nThis is a test\nin multiple lines.");
-            // TODO: Implement scrap rides logic here
+            ScrapRidesHandler.handleScrapRides(this);
         });
 
         scrapCard.add(scrapRidesButton, new GridBagConstraints());

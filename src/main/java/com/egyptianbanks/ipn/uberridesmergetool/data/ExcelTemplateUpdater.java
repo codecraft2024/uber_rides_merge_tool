@@ -177,10 +177,9 @@ public class ExcelTemplateUpdater {
     }
 
     private boolean containsArabic(String s) {
-        for (char c : s.toCharArray()) {
-            if (c >= 0x0600 && c <= 0x06FF) return true;
-        }
-        return false;
+        if (s == null) return false;
+        // Use regex to check for any Arabic Unicode character
+        return s.matches(".*[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]+.*");
     }
 
     private java.util.Date parseDate(String dateStr) throws ParseException {
