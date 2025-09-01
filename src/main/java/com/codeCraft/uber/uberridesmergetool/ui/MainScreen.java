@@ -1,8 +1,8 @@
-package com.egyptianbanks.ipn.uberridesmergetool.ui;
+package com.codeCraft.uber.uberridesmergetool.ui;
 
-import com.egyptianbanks.ipn.uberridesmergetool.domain.service.UberMergeManager;
-import com.egyptianbanks.ipn.uberridesmergetool.domain.util.StatusLoggerImpl;
-import com.egyptianbanks.ipn.uberridesmergetool.util.ScrapRidesHandler;
+import com.codeCraft.uber.uberridesmergetool.domain.service.UberMergeManager;
+import com.codeCraft.uber.uberridesmergetool.domain.util.StatusLoggerImpl;
+import com.codeCraft.uber.uberridesmergetool.util.ScrapRidesHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

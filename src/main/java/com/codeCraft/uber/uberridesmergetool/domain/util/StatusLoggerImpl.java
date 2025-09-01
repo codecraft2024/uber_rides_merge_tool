@@ -1,4 +1,4 @@
-package com.egyptianbanks.ipn.uberridesmergetool.domain.util;
+package com.codeCraft.uber.uberridesmergetool.domain.util;
 
 import org.springframework.stereotype.Component;
 

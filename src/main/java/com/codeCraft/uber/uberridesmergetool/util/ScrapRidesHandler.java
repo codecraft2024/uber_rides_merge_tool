@@ -1,4 +1,4 @@
-package com.egyptianbanks.ipn.uberridesmergetool.util;
+package com.codeCraft.uber.uberridesmergetool.util;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

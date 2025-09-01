@@ -1,6 +1,6 @@
-package com.egyptianbanks.ipn.uberridesmergetool.data;
+package com.codeCraft.uber.uberridesmergetool.data;
 
-import com.egyptianbanks.ipn.uberridesmergetool.domain.model.ReceiptData;
+import com.codeCraft.uber.uberridesmergetool.domain.model.ReceiptData;
 import java.io.FileWriter;
 import java.util.List;
 

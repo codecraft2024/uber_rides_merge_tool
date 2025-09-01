@@ -1,6 +1,6 @@
-package com.egyptianbanks.ipn.uberridesmergetool;
+package com.codeCraft.uber.uberridesmergetool;
 
-import com.egyptianbanks.ipn.uberridesmergetool.ui.MainScreen;
+import com.codeCraft.uber.uberridesmergetool.ui.MainScreen;
 import com.formdev.flatlaf.FlatLightLaf;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

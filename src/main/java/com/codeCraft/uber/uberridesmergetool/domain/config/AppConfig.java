@@ -1,4 +1,4 @@
-package com.egyptianbanks.ipn.uberridesmergetool.domain.config;
+package com.codeCraft.uber.uberridesmergetool.domain.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
